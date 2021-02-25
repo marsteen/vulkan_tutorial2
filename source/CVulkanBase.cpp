@@ -11,6 +11,10 @@
 #include <windows.h>
 #endif
 
+#define VERT_SHADER_FILE "./shader/simple.vert.spv"
+#define FRAG_SHADER_FILE "./shader/simple.frag.spv"
+
+
 static void assert( bool flag, const char *msg) 
 {
      printf("f=%d %s\n", flag, msg);
@@ -849,7 +853,7 @@ void CVulkanBase::initVulkan(HINSTANCE hInstance, HWND windowHandle)
     HANDLE fileHandle = 0;
 
     // load our vertex shader:
-    fileHandle = CreateFile( "vert.spv", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
+    fileHandle = CreateFile(VERT_SHADER_FILE, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
     if( fileHandle == INVALID_HANDLE_VALUE ) {
         printf( "Failed to open shader file.\n" );
         exit(1);
@@ -867,7 +871,7 @@ void CVulkanBase::initVulkan(HINSTANCE hInstance, HWND windowHandle)
     checkVulkanResult( result, "Failed to create vertex shader module." );
 
     // load our fragment shader:
-    fileHandle = CreateFile( "frag.spv", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
+    fileHandle = CreateFile(FRAG_SHADER_FILE, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
     if( fileHandle == INVALID_HANDLE_VALUE ) {
         //OutputDebugStringA( "Failed to open shader file." );
         printf( "Failed to open shader file.\n" );
