@@ -5,8 +5,8 @@
 #include <cstdlib>
 
 #define VK_USE_PLATFORM_WIN32_KHR
-#define VK_NO_PROTOTYPES            // do not declared prototypes, so I can load dynamically!
-#include <vulkan.h>
+//#define VK_NO_PROTOTYPES            // do not declared prototypes, so I can load dynamically!
+#include <vulkan/vulkan.h>
 
 struct shader_uniform {
 

@@ -6,14 +6,20 @@ message("System: ${CMAKE_SYSTEM_NAME}")
 
 SET(VULKAN_SDK_WINDOWS "/c/VulkanSDK/1.2.162.1")
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++17 -O2")
-include_directories(./source/include)
+include_directories(./source/include "$ENV{VULKAN_SDK}/Include")
+link_directories("$ENV{VULKAN_SDK}/Lib")
+
+
 add_executable(${CMAKE_PROJECT_NAME}
     ./source/main.cpp
     ./source/CVulkanBase.cpp
     ./source/shader/simple.frag
     ./source/shader/simple.vert
 )
-target_link_libraries(${CMAKE_PROJECT_NAME})
+target_link_libraries(${CMAKE_PROJECT_NAME}
+    vulkan-1
+)
+
 set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES OUTPUT_NAME vktriangle)
 
 #

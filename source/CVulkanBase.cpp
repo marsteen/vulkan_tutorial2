@@ -52,7 +52,7 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL MyDebugReportCallback( VkDebugUtilsMessage
     return VK_FALSE;
 }   
 
-
+#if 0
 PFN_vkCreateInstance vkCreateInstance = NULL;
 PFN_vkEnumerateInstanceLayerProperties vkEnumerateInstanceLayerProperties = NULL;
 PFN_vkEnumerateInstanceExtensionProperties vkEnumerateInstanceExtensionProperties = NULL;
@@ -121,15 +121,18 @@ PFN_vkCreateSwapchainKHR vkCreateSwapchainKHR = NULL;
 PFN_vkGetSwapchainImagesKHR vkGetSwapchainImagesKHR = NULL;
 PFN_vkAcquireNextImageKHR vkAcquireNextImageKHR = NULL;
 PFN_vkQueuePresentKHR vkQueuePresentKHR = NULL;
+#endif
 
 
 static void win32_LoadVulkan( ) 
 {
 
-    HMODULE vulkan_module = LoadLibrary( "vulkan-1.dll" );
+    HMODULE vulkan_module = LoadLibrary("vulkan-1.dll");
+    
     
     assert( vulkan_module, "Failed to load vulkan module." );
 
+#if 0
     vkCreateInstance = (PFN_vkCreateInstance) GetProcAddress( vulkan_module, "vkCreateInstance" );
     vkEnumerateInstanceLayerProperties = (PFN_vkEnumerateInstanceLayerProperties) GetProcAddress( vulkan_module, "vkEnumerateInstanceLayerProperties" );
     vkEnumerateInstanceExtensionProperties = (PFN_vkEnumerateInstanceExtensionProperties) GetProcAddress( vulkan_module, "vkEnumerateInstanceExtensionProperties" );
@@ -182,20 +185,24 @@ static void win32_LoadVulkan( )
     vkCmdBindDescriptorSets = (PFN_vkCmdBindDescriptorSets) GetProcAddress( vulkan_module, "vkCmdBindDescriptorSets" );
     vkFlushMappedMemoryRanges = (PFN_vkFlushMappedMemoryRanges) GetProcAddress( vulkan_module, "vkFlushMappedMemoryRanges" );
     vkCreateSampler = (PFN_vkCreateSampler) GetProcAddress( vulkan_module, "vkCreateSampler" );
+#endif    
 
 }
 
+#if 0
 template <typename T>
 void GetInstanceProcAddr(const VkInstance& instance, T& proc, const char* procName)
 {
     proc = (T) vkGetInstanceProcAddr(instance, procName);
 }
+#endif
 
 static void win32_LoadVulkanExtensions(const SVulkanContext &context) 
 {
     
     //GetInstanceProcAddr(context.instance, vkCreateDebugUtilsMessengerEXT, "vkCreateDebugUtilsMessengerEXT");
 
+#if 0
     vkCreateDebugUtilsMessengerEXT  = (PFN_vkCreateDebugUtilsMessengerEXT)  vkGetInstanceProcAddr( context.instance, "vkCreateDebugUtilsMessengerEXT" );
     vkDestroyDebugUtilsMessengerEXT = (PFN_vkDestroyDebugUtilsMessengerEXT) vkGetInstanceProcAddr( context.instance, "vkDestroyDebugUtilsMessengerEXT" );
     vkCreateWin32SurfaceKHR              = (PFN_vkCreateWin32SurfaceKHR) vkGetInstanceProcAddr( context.instance, "vkCreateWin32SurfaceKHR" );
@@ -207,6 +214,7 @@ static void win32_LoadVulkanExtensions(const SVulkanContext &context)
     vkGetSwapchainImagesKHR = (PFN_vkGetSwapchainImagesKHR) vkGetInstanceProcAddr( context.instance, "vkGetSwapchainImagesKHR" );
     vkAcquireNextImageKHR = (PFN_vkAcquireNextImageKHR) vkGetInstanceProcAddr( context.instance, "vkAcquireNextImageKHR" );
     vkQueuePresentKHR = (PFN_vkQueuePresentKHR) vkGetInstanceProcAddr( context.instance, "vkQueuePresentKHR" );
+#endif    
 
 }
 
@@ -224,7 +232,8 @@ void CVulkanBase::setWindowSize(int width, int height)
 
 void CVulkanBase::finishVulkan()
 {
-    vkDestroyDebugUtilsMessengerEXT( context.instance, context.callback, NULL );
+    //vkDestroyDebugUtilsMessengerEXT( context.instance, context.callback, NULL );
+    //vkDestroyDebugUtilsMessenger( context.instance, context.callback, NULL );
 }
 
 
@@ -234,7 +243,7 @@ void CVulkanBase::initVulkan(HINSTANCE hInstance, HWND windowHandle)
     VkResult result;
 
 
-    win32_LoadVulkan();
+    //win32_LoadVulkan();
     
 
     memset(&context, 0, sizeof(SVulkanContext));
@@ -300,8 +309,8 @@ void CVulkanBase::initVulkan(HINSTANCE hInstance, HWND windowHandle)
     callbackCreateInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
     callbackCreateInfo.pfnUserCallback = &MyDebugReportCallback;
 
-    result = vkCreateDebugUtilsMessengerEXT( context.instance, &callbackCreateInfo, NULL, &context.callback );
-    checkVulkanResult( result, "Failed to create debug report callback." );
+    //result = vkCreateDebugUtilsMessengerEXT( context.instance, &callbackCreateInfo, NULL, &context.callback );
+//    checkVulkanResult( result, "Failed to create debug report callback." );
 
 
     // get a windows surface to render into:
@@ -1457,7 +1466,7 @@ void CVulkanBase::initVulkan(HINSTANCE hInstance, HWND windowHandle)
 void CVulkanBase::renderVulkan() 
 {
 
-    printf("renderVulkan\n");
+    //printf("renderVulkan\n");
 
     if (context.cameraZ <= 1) 
     {
