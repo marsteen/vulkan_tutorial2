@@ -1103,7 +1103,8 @@ void CVulkanBase::initVulkan(HINSTANCE hInstance, HWND windowHandle)
 
     // copy our image content:
     void *imageMapped;
-    result = vkMapMemory( context.device, textureImageMemory, 0, VK_WHOLE_SIZE, 0, &imageMapped );
+    //result = vkMapMemory( context.device, textureImageMemory, 0, VK_WHOLE_SIZE, 0, &imageMapped );
+    result = vkMapMemory( context.device, textureImageMemory, 0, textureImageAllocateInfo.allocationSize, 0, &imageMapped );
     checkVulkanResult( result, "Failed to map uniform buffer memory." );
     
     memcpy( imageMapped, testImage.data, sizeof(float) * testImage.width * testImage.height * 4 );
@@ -1479,12 +1480,14 @@ void CVulkanBase::renderVulkan()
         context.cameraZDir = -1;
     }
 
-    context.cameraZ += context.cameraZDir * 0.01f;
+    context.cameraZ += context.cameraZDir * 0.3f;
     context.uniforms.viewMatrix[11] = context.cameraZ;
 
     // update shader uniforms:
     void *matrixMapped;
+    VkDeviceSize memsize = 16 * 3 * sizeof(float);
     vkMapMemory( context.device, context.uniforms.memory, 0, VK_WHOLE_SIZE, 0, &matrixMapped );
+    //vkMapMemory( context.device, context.uniforms.memory, 0, memsize, 0, &matrixMapped );
     
     memcpy( matrixMapped, context.uniforms.projectionMatrix, sizeof(float) * 16 );
     memcpy( ((float *)matrixMapped + 16), context.uniforms.viewMatrix, sizeof(float) * 16 );
@@ -1494,7 +1497,7 @@ void CVulkanBase::renderVulkan()
     memoryRange.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
     memoryRange.memory = context.uniforms.memory;
     memoryRange.offset = 0;
-    memoryRange.size = VK_WHOLE_SIZE;
+    memoryRange.size = memsize;
     
     vkFlushMappedMemoryRanges( context.device, 1, &memoryRange );
  

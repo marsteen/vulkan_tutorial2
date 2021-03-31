@@ -25,6 +25,10 @@ Linux apt-get packages:
 * libglfw3-dev
 * lunarg-vulkan-sdk
 
+To start the windows-versio from an exlorer windows, copy the DLLs from the dlls-folder
+into the build-folder.
+
+
 ### Coding style
 
 * C++ Allman/BSD Style
